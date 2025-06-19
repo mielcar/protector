@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: warehouse
+
+warehouse:
+  sensor:
+    temperature:
+      port: 3344
+      type: temperature
+    humidity:
+      port: 3355
+      type: humidity

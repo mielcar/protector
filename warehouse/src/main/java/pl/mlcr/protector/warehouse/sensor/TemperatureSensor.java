@@ -5,10 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-class TemperatureSensor implements Sensor {
-    private final int port = 3344;
-    @Override
-    public SensorMessage parseMessage(String udpMessage) {
-        return null;
+class TemperatureSensor extends SingleValueSensor {
+    public TemperatureSensor(SensorsProperties sensorsProperties) {
+        super(sensorsProperties.getTemperature());
     }
 }
