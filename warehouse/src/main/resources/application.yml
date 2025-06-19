@@ -10,3 +10,7 @@ warehouse:
     humidity:
       port: 3355
       type: humidity
+
+logging:
+  level:
+    reactor.netty.udp.UdpServer: DEBUG

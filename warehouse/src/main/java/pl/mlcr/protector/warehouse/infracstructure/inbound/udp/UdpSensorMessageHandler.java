@@ -1,4 +1,4 @@
-package pl.mlcr.protector.warehouse.inbound;
+package pl.mlcr.protector.warehouse.infracstructure.inbound.udp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
