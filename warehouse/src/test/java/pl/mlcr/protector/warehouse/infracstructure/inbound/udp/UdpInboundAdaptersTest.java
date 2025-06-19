@@ -27,7 +27,7 @@ class UdpInboundAdaptersTest {
                 .doOnCancel(() -> log.error("Subscription to UDP messages stream cancelled"))
                 .share();
 
-        udpInboundAdapters.bind(messagesSink);
+        udpInboundAdapters.start(messagesSink);
         sensorMessageFlux
                 .doOnNext(sensorMessage -> log.error(sensorMessage.sensorId()))
                 .subscribe();

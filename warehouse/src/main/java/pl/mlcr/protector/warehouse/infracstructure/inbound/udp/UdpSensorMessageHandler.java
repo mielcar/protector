@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import pl.mlcr.protector.warehouse.sensor.Sensor;
 import pl.mlcr.protector.warehouse.sensor.SensorMessage;
+import pl.mlcr.protector.warehouse.sensor.SensorMessageParseException;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.netty.udp.UdpInbound;
@@ -20,18 +21,22 @@ class UdpSensorMessageHandler {
         return inbound.receive()
                 .asString()
                 .doOnNext(message -> log.debug("Received UDP message: '{}'", message))
-                .map(sensor::parseMessage)
+                .flatMap(this::parseSensorMessage)
                 .doOnNext(sensorMessage -> {
                     Sinks.EmitResult result = messagesSink.tryEmitNext(sensorMessage);
                     if (result.isFailure()) {
                         log.error("Failed to emit sensor message: {}", result);
                     }
                 })
-                .doOnError(error -> log.error("Error processing UDP message", error))
-                .onErrorResume(error -> {
-                    log.warn("Resuming after error: {}", error.getMessage());
-                    return Mono.empty();
-                })
                 .then();
+    }
+
+    private Mono<SensorMessage> parseSensorMessage(String message) {
+        try {
+            return Mono.just(sensor.parseMessage(message));
+        } catch (SensorMessageParseException sensorMessageParseException) {
+            log.error("Error processing UDP message", sensorMessageParseException);
+            return Mono.empty();
+        }
     }
 }

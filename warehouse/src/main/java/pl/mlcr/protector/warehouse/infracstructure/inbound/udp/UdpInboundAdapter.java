@@ -13,11 +13,11 @@ import reactor.netty.udp.UdpServer;
 class UdpInboundAdapter {
     private final Connection server;
 
-    static UdpInboundAdapter from(Sensor sensor) {
-        Sinks.Many<SensorMessage> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
+    static UdpInboundAdapter from(Sensor sensor, Sinks.Many<SensorMessage> messagesSink) {
         UdpSensorMessageHandler handler = new UdpSensorMessageHandler(sensor, messagesSink);
         Connection server = UdpServer.create()
                 .port(sensor.getPort())
+                .host("127.0.0.1")
                 .handle(handler::handleUdpMessage)
                 .bindNow();
         return new UdpInboundAdapter(server);

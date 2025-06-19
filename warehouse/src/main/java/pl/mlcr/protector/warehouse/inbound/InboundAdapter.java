@@ -5,5 +5,5 @@ import reactor.core.publisher.Sinks;
 
 public interface InboundAdapter {
 
-    void bind(Sinks.Many<SensorMessage> messagesSink);
+    void start(Sinks.Many<SensorMessage> messagesSink);
 }

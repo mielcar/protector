@@ -17,11 +17,7 @@ public class InboundAdapters {
 
     public Flux<SensorMessage> start() {
         Sinks.Many<SensorMessage> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
-        Flux<SensorMessage> sensorMessageFlux = messagesSink.asFlux()
-                .doOnSubscribe(s -> log.debug("New subscription to UDP messages stream"))
-                .doOnCancel(() -> log.debug("Subscription to UDP messages stream cancelled"))
-                .share();
-        inboundAdapters.forEach(inboundAdapter -> inboundAdapter.bind(messagesSink));
-        return sensorMessageFlux;
+        inboundAdapters.forEach(inboundAdapter -> inboundAdapter.start(messagesSink));
+        return messagesSink.asFlux();
     }
 }

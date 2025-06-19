@@ -17,9 +17,9 @@ class UdpInboundAdapters implements InboundAdapter {
     private final List<UdpInboundAdapter> adapters = new ArrayList<>();
 
     @Override
-    public void bind(Sinks.Many<SensorMessage> messagesSink) {
+    public void start(Sinks.Many<SensorMessage> messagesSink) {
         adapters.addAll(sensorFactory.getAllSensors().stream()
-                .map(UdpInboundAdapter::from)
+                .map(sensor -> UdpInboundAdapter.from(sensor, messagesSink))
                 .toList());
     }
 }
