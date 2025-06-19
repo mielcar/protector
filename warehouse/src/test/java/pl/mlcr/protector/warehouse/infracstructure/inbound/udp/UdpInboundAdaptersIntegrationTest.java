@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import pl.mlcr.protector.warehouse.sensor.SensorMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -11,10 +12,16 @@ import reactor.core.publisher.Sinks;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
+@ActiveProfiles("test")
 @SpringBootTest
-class UdpInboundAdaptersTest {
+class UdpInboundAdaptersIntegrationTest {
 
     @Autowired
     UdpInboundAdapters udpInboundAdapters;
@@ -22,27 +29,28 @@ class UdpInboundAdaptersTest {
     @Test
     void shouldStartAdapters() throws Exception {
         Sinks.Many<SensorMessage> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
-        Flux<SensorMessage> sensorMessageFlux = messagesSink.asFlux()
-                .doOnSubscribe(s -> log.error("New subscription to UDP messages stream"))
-                .doOnCancel(() -> log.error("Subscription to UDP messages stream cancelled"))
-                .share();
-
         udpInboundAdapters.start(messagesSink);
+        Flux<SensorMessage> sensorMessageFlux = messagesSink.asFlux();
+        CountDownLatch latch = new CountDownLatch(2);
+
         sensorMessageFlux
-                .doOnNext(sensorMessage -> log.error(sensorMessage.sensorId()))
+                .doOnNext(sensorMessage -> latch.countDown())
                 .subscribe();
-        sendMessage("sensor_id=t1; value=30");
-        Thread.sleep(10000);
-        sendMessage("sensor_id=t1; value=30");
+
+        sendMessage("sensor_id=t1; value=30", 3344);
+        sendMessage("sensor_id=h1; value=50", 3355);
+
+        boolean result = latch.await(1, TimeUnit.SECONDS);
+        assertThat(result, is(true));
     }
 
-    private void sendMessage(String message) throws Exception {
+    private void sendMessage(String message, int port) throws Exception {
         DatagramSocket client = new DatagramSocket();
 
         byte[] messageBytes = message.getBytes();
         DatagramPacket packet = new DatagramPacket(
                 messageBytes, messageBytes.length,
-                InetAddress.getLocalHost(), 3344
+                InetAddress.getByName("127.0.0.1"), port
         );
 
         client.send(packet);

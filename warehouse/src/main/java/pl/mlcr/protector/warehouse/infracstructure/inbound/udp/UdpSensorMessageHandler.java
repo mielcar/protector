@@ -11,6 +11,8 @@ import reactor.core.publisher.Sinks;
 import reactor.netty.udp.UdpInbound;
 import reactor.netty.udp.UdpOutbound;
 
+import java.time.Duration;
+
 @Slf4j
 @RequiredArgsConstructor
 class UdpSensorMessageHandler {
@@ -23,10 +25,8 @@ class UdpSensorMessageHandler {
                 .doOnNext(message -> log.debug("Received UDP message: '{}'", message))
                 .flatMap(this::parseSensorMessage)
                 .doOnNext(sensorMessage -> {
-                    Sinks.EmitResult result = messagesSink.tryEmitNext(sensorMessage);
-                    if (result.isFailure()) {
-                        log.error("Failed to emit sensor message: {}", result);
-                    }
+                    Sinks.EmitFailureHandler handler = Sinks.EmitFailureHandler.busyLooping(Duration.ofMillis(10));
+                    messagesSink.emitNext(sensorMessage, handler);
                 })
                 .then();
     }
