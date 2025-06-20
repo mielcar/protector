@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import pl.mlcr.protector.warehouse.sensor.SensorMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -19,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @Slf4j
-@ActiveProfiles("test")
 @SpringBootTest
 class UdpInboundAdaptersIntegrationTest {
 
