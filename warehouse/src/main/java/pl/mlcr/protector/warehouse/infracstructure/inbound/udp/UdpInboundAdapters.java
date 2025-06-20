@@ -15,11 +15,13 @@ import java.util.List;
 class UdpInboundAdapters implements InboundAdapter {
     private final SensorFactory sensorFactory;
     private final List<UdpInboundAdapter> adapters = new ArrayList<>();
+    private final UdpProperties udpProperties;
+
 
     @Override
     public void start(Sinks.Many<SensorMessage> messagesSink) {
         adapters.addAll(sensorFactory.getAllSensors().stream()
-                .map(sensor -> UdpInboundAdapter.from(sensor, messagesSink))
+                .map(sensor -> UdpInboundAdapter.from(sensor, messagesSink, udpProperties.getHost()))
                 .toList());
     }
 }

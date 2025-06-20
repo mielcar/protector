@@ -3,6 +3,8 @@ spring:
     name: warehouse
 
 warehouse:
+  udp:
+    host: 127.0.0.1
   sensor:
     temperature:
       port: 3344

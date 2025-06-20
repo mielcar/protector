@@ -42,6 +42,11 @@ class UdpInboundAdaptersIntegrationTest {
         assertThat(result, is(true));
     }
 
+    @Test
+    void playground() throws Exception {
+        sendMessage("sensor_id=t1; value=30", 3355);
+    }
+
     private void sendMessage(String message, int port) throws Exception {
         DatagramSocket client = new DatagramSocket();
 
