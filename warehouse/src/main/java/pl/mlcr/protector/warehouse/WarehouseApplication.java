@@ -6,12 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import pl.mlcr.protector.warehouse.infracstructure.inbound.udp.UdpProperties;
+import pl.mlcr.protector.warehouse.infracstructure.processing.kafka.KafkaProperties;
 import pl.mlcr.protector.warehouse.sensor.SensorsProperties;
 
 @Slf4j
 @SpringBootApplication
 @RequiredArgsConstructor
-@EnableConfigurationProperties({SensorsProperties.class, UdpProperties.class})
+@EnableConfigurationProperties({SensorsProperties.class, UdpProperties.class, KafkaProperties.class})
 public class WarehouseApplication {
 
     public static void main(String[] args) {

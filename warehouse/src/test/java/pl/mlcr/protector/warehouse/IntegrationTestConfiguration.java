@@ -3,6 +3,7 @@ package pl.mlcr.protector.warehouse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import pl.mlcr.protector.warehouse.infracstructure.processing.kafka.KafkaPublisher;
 import pl.mlcr.protector.warehouse.infracstructure.processing.kafka.KafkaTopicConfig;
 import pl.mlcr.protector.warehouse.processing.SensorMessagesProcessor;
 
@@ -21,5 +22,11 @@ class IntegrationTestConfiguration {
     @Primary
     public KafkaTopicConfig kafkaTopicConfig() {
         return mock(KafkaTopicConfig.class);
+    }
+
+    @Bean
+    @Primary
+    public KafkaPublisher kafkaPublisher() {
+        return mock(KafkaPublisher.class);
     }
 }

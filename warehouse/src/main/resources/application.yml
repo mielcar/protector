@@ -15,3 +15,7 @@ warehouse:
     humidity:
       port: 3355
       type: humidity
+
+kafka:
+  sensor-topic: sensor
+  bootstrap-servers: localhost:19092

@@ -1,6 +1,7 @@
 package pl.mlcr.protector.warehouse.processing;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import pl.mlcr.protector.warehouse.inbound.InboundAdapters;
 import pl.mlcr.protector.warehouse.sensor.SensorMessage;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SensorMessagesProcessor implements ApplicationListener<ApplicationReadyEvent> {
@@ -17,8 +19,7 @@ public class SensorMessagesProcessor implements ApplicationListener<ApplicationR
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         Flux<SensorMessage> messageFlux = inboundAdapters.start();
-        messageFlux.doOnNext(outboundPublisher::publish)
-                .map(outboundPublisher::publish)
+        messageFlux.flatMap(outboundPublisher::publish)
                 .subscribe();
     }
 }
