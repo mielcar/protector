@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 
 @Component
 @RequiredArgsConstructor
-class SensorMessagesProcessor implements ApplicationListener<ApplicationReadyEvent> {
+public class SensorMessagesProcessor implements ApplicationListener<ApplicationReadyEvent> {
     private final InboundAdapters inboundAdapters;
     private final OutboundPublisher outboundPublisher;
 
