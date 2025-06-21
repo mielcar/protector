@@ -1,7 +1,9 @@
 package pl.mlcr.protector.warehouse.processing;
 
 import pl.mlcr.protector.warehouse.sensor.SensorMessage;
+import reactor.core.publisher.Mono;
+import reactor.kafka.sender.SenderResult;
 
 public interface OutboundPublisher {
-    void publish(SensorMessage message);
+    Mono<SenderResult<Void>> publish(SensorMessage message);
 }

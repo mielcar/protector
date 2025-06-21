@@ -18,6 +18,7 @@ class SensorMessagesProcessor implements ApplicationListener<ApplicationReadyEve
     public void onApplicationEvent(ApplicationReadyEvent event) {
         Flux<SensorMessage> messageFlux = inboundAdapters.start();
         messageFlux.doOnNext(outboundPublisher::publish)
+                .map(outboundPublisher::publish)
                 .subscribe();
     }
 }
