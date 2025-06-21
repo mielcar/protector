@@ -34,6 +34,9 @@ services:
       dockerfile: warehouse/Dockerfile
     depends_on:
       - broker
+    environment:
+      KAFKA_BOOTSTRAPSERVERS: broker:9092
+      KAFKA_SENSORTOPIC: sensor
     ports:
       - "3344:3344/udp"
       - "3355:3355/udp"
