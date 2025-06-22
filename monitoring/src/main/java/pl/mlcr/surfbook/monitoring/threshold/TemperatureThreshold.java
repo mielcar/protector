@@ -8,7 +8,6 @@ import pl.mlcr.surfbook.monitoring.input.Measurement;
 @Component
 class TemperatureThreshold implements MeasurementThreshold {
     private static final String TYPE = "temperature";
-
     private final double threshold;
 
     public TemperatureThreshold(ThresholdProperties properties) {
@@ -29,5 +28,10 @@ class TemperatureThreshold implements MeasurementThreshold {
             log.error("Wrong temperature value: {}", measurement.value());
             return false;
         }
+    }
+
+    @Override
+    public String getThreshold() {
+        return String.valueOf(threshold);
     }
 }

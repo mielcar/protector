@@ -6,4 +6,6 @@ public interface MeasurementThreshold {
     String getType();
 
     boolean isInNorm(Measurement measurement);
+
+    String getThreshold();
 }

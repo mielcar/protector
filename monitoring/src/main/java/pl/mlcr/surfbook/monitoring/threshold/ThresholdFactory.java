@@ -1,7 +1,6 @@
 package pl.mlcr.surfbook.monitoring.threshold;
 
 import org.springframework.stereotype.Component;
-import pl.mlcr.surfbook.monitoring.input.Measurement;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class ThresholdFactory {
                         Collectors.reducing(null, (a, b) -> b)));
     }
 
-    public Optional<MeasurementThreshold> getThreshold(Measurement measurement) {
-        return Optional.ofNullable(thresholds.get(measurement.name()));
+    public Optional<MeasurementThreshold> getThreshold(String type) {
+        return Optional.ofNullable(thresholds.get(type));
     }
 }

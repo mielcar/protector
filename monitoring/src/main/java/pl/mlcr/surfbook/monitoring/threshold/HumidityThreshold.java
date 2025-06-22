@@ -29,4 +29,9 @@ class HumidityThreshold implements MeasurementThreshold {
             return false;
         }
     }
+
+    @Override
+    public String getThreshold() {
+        return String.valueOf(threshold);
+    }
 }
