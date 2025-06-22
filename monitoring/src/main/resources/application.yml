@@ -1,0 +1,14 @@
+server:
+  port: 8480
+
+spring:
+  application:
+    name: monitoring
+
+monitoring:
+  kafka:
+    topic: sensor
+    bootstrap-servers: localhost:19092
+  threshold:
+    temperature: 35
+    humidity: 50
