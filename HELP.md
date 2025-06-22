@@ -31,3 +31,7 @@ Example windows netcat command simulating temperature sensor which exceeds confi
 
 Check monitoring logs application for message: 
 `ERROR 1 --- [monitoring] [-kafka-sensor-1] p.m.s.monitoring.alarm.AlarmService      : Error, measurement exceeds configured threshold! warehouse ID: warehouse1, measurement type: temperature, value: 50, threshold: 35.0`
+
+## To consider
+
+Usage of protobuf for messages structure coordination/validation
