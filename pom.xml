@@ -17,6 +17,7 @@
 
     <modules>
         <module>warehouse</module>
+        <module>monitoring</module>
     </modules>
 
     <properties>
