@@ -40,3 +40,13 @@ services:
     ports:
       - "3344:3344/udp"
       - "3355:3355/udp"
+
+  monitoring:
+    networks:
+      - kafka
+    build:
+      dockerfile: monitoring/Dockerfile
+    depends_on:
+      - broker
+    environment:
+      MONITORING_KAFKA_BOOTSTRAPSERVERS: broker:9092

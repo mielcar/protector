@@ -6,6 +6,7 @@ spring:
     name: warehouse
 
 warehouse:
+  id: warehouse1
   udp:
     host: 127.0.0.1
   sensor:
